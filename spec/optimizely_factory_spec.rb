@@ -86,5 +86,29 @@ describe Optimizely::OptimizelyFactory do
       )
       expect(optimizely_instance.config_manager). to eq(http_project_config_manager)
     end
+
+    it 'should take event processor when flush interval and batch size are set' do
+      allow(Optimizely::HTTPProjectConfigManager).to receive(:new)
+
+      event_processor = BatchEventProcessor.new(
+        event_dispatcher: event_dispatcher,
+        batch_size: @max_event_batch_size,
+        flush_interval: @max_event_flush_interval,
+        notification_center: notification_center
+      )
+
+      optimizely_instance = Optimizely::OptimizelyFactory.custom_instance(
+        'sdk_key',
+        datafile,
+        event_dispatcher,
+        spy_logger,
+        error_handler,
+        false,
+        user_profile_service,
+        nil,
+        notification_center
+      )
+      expect(optimizely_instance.config_manager). to eq(http_project_config_manager)
+    end
   end
 end

@@ -31,18 +31,18 @@ module Optimizely
     FLUSH_SIGNAL = 'FLUSH_SIGNAL'
 
     def initialize(
-      event_queue:,
+      event_queue: [],
       event_dispatcher:,
       batch_size:,
       flush_interval:,
       start_by_default: false,
-      logger:,
+      logger: NoOpErrorHandler.new,
       notification_center: nil
     )
-      @event_queue = event_queue || []
+      @event_queue = event_queue
       @event_dispatcher = event_dispatcher
       @batch_size = batch_size || DEFAULT_BATCH_SIZE
-      @flush_interval = flush_interval || DEFAULT_BATCH_INTERVAL
+      @flush_interval = flush_interval || DEFAULT_FLUSH_INTERVAL
       @logger = logger
       @notification_center = notification_center
       @mutex = Mutex.new
