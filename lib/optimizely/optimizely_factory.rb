@@ -20,42 +20,46 @@ require 'optimizely'
 require 'optimizely/event/batch_event_processor'
 module Optimizely
   class OptimizelyFactory
-
     attr_reader :max_event_batch_size, :max_event_flush_interval
 
-    def self.set_max_event_batch_size(batch_size)
+    # Convenience method for setting the maximum number of events contained within a batch.
+    # @param batch_size Integer - Sets size of EventQueue.
+    # @param logger - Optional LoggerInterface Provides a log method to log messages.
+    def self.max_event_batch_size(batch_size, logger)
       unless batch_size.is_a? Integer
-        @logger.log(
+        logger.log(
           Logger::ERROR,
-          "Batch size has invalid type. Reverting to default configuration."
+          'Batch size has invalid type. Reverting to default configuration.'
         )
         return
       end
 
-      if batch_size <= 0
-        @logger.log(
+      unless batch_size.positive?
+        logger.log(
           Logger::ERROR,
-          "Batch size cannot be <= 0. Reverting to default configuration."
+          'Batch size cannot be <= 0. Reverting to default configuration.'
         )
         return
       end
       @max_event_batch_size = batch_size
     end
 
-
-    def self.set_max_event_flush_interval(flush_interval)
-      unless Helpers::Validator.string_numeric?(flush_interval)
-        @logger.log(
+    # Convenience method for setting the maximum time interval in milliseconds between event dispatches.
+    # @param flush_interval Numeric - Time interval between event dispatches.
+    # @param logger - Optional LoggerInterface Provides a log method to log messages.
+    def self.max_event_flush_interval(flush_interval, logger)
+      unless flush_interval.is_a? Numeric
+        logger.log(
           Logger::ERROR,
-          "Flush interval has invalid type. Reverting to default configuration."
+          'Flush interval has invalid type. Reverting to default configuration.'
         )
         return
       end
 
-      if flush_interval <= 0
-        @logger.log(
+      unless flush_interval.positive?
+        logger.log(
           Logger::ERROR,
-          "Flush interval cannot be <= 0. Reverting to default configuration."
+          'Flush interval cannot be <= 0. Reverting to default configuration.'
         )
         return
       end
@@ -98,8 +102,7 @@ module Optimizely
       skip_json_validation = false,
       user_profile_service = nil,
       config_manager = nil,
-      notification_center = nil,
-      event_processor = nil
+      notification_center = nil
     )
       event_processor = BatchEventProcessor.new(
         event_dispatcher: event_dispatcher,
