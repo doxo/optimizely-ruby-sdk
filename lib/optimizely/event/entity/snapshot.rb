@@ -19,9 +19,9 @@ module Optimizely
   class Snapshot
     attr_reader :events, :decisions
 
-    def initialize(events:, decisions: nil)
-      @decisions = decisions
-      @events = events
+    def initialize(opts = {})
+      @decisions = opts[:decisions]
+      @events = opts[:events]
     end
 
     def as_json

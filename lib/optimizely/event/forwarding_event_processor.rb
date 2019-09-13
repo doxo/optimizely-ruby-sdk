@@ -31,10 +31,10 @@ module Optimizely
 
       begin
         @event_dispatcher.dispatch_event(log_event)
-        @notification_center&.send_notifications(
+        @notification_center.send_notifications(
           NotificationCenter::NOTIFICATION_TYPES[:LOG_EVENT],
           log_event
-        )
+        ) if @notification_center
       rescue StandardError => e
         @logger.log(Logger::ERROR, "Error dispatching event: #{log_event} #{e.message}.")
       end

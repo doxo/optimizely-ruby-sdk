@@ -34,30 +34,32 @@ module Optimizely
     FLUSH_SIGNAL = 'FLUSH_SIGNAL'
     SHUTDOWN_SIGNAL = 'SHUTDOWN_SIGNAL'
 
-    def initialize(
-      event_queue: SizedQueue.new(DEFAULT_QUEUE_CAPACITY),
-      event_dispatcher: Optimizely::EventDispatcher.new,
-      batch_size: DEFAULT_BATCH_SIZE,
-      flush_interval: DEFAULT_BATCH_INTERVAL,
-      logger: NoOpLogger.new,
-      notification_center: nil
-    )
-      @event_queue = event_queue
-      @logger = logger
-      @event_dispatcher = event_dispatcher
-      @batch_size = if (batch_size.is_a? Integer) && positive_number?(batch_size)
-                      batch_size
+    def initialize(opts = {})
+      opts = {
+        event_queue: SizedQueue.new(DEFAULT_QUEUE_CAPACITY),
+        event_dispatcher: Optimizely::EventDispatcher.new,
+        batch_size: DEFAULT_BATCH_SIZE,
+        flush_interval: DEFAULT_BATCH_INTERVAL,
+        logger: NoOpLogger.new,
+        notification_center: nil
+      }.merge(opts)
+
+      @event_queue = opts[:event_queue]
+      @logger = opts[:logger]
+      @event_dispatcher = opts[:event_dispatcher]
+      @batch_size = if (opts[:batch_size].is_a? Integer) && positive_number?(opts[:batch_size])
+                      opts[:batch_size]
                     else
                       @logger.log(Logger::DEBUG, "Setting to default batch_size: #{DEFAULT_BATCH_SIZE}.")
                       DEFAULT_BATCH_SIZE
                     end
-      @flush_interval = if positive_number?(flush_interval)
-                          flush_interval
+      @flush_interval = if positive_number?(opts[:flush_interval])
+                          opts[:flush_interval]
                         else
                           @logger.log(Logger::DEBUG, "Setting to default flush_interval: #{DEFAULT_BATCH_INTERVAL} ms.")
                           DEFAULT_BATCH_INTERVAL
                         end
-      @notification_center = notification_center
+      @notification_center = opts[:notification_center]
       @mutex = Mutex.new
       @received = ConditionVariable.new
       @current_batch = []
@@ -130,7 +132,7 @@ module Optimizely
 
         @mutex.synchronize do
           @received.wait(@mutex, 0.05)
-          item = @event_queue.pop if @event_queue.length.positive?
+          item = @event_queue.pop if @event_queue.length > 0
         end
 
         if item.nil?
@@ -169,10 +171,10 @@ module Optimizely
       log_event = Optimizely::EventFactory.create_log_event(@current_batch, @logger)
       begin
         @event_dispatcher.dispatch_event(log_event)
-        @notification_center&.send_notifications(
+        @notification_center.send_notifications(
           NotificationCenter::NOTIFICATION_TYPES[:LOG_EVENT],
           log_event
-        )
+        ) if @notification_center
       rescue StandardError => e
         @logger.log(Logger::ERROR, "Error dispatching event: #{log_event} #{e.message}.")
       end
@@ -219,7 +221,7 @@ module Optimizely
     def positive_number?(value)
       # Returns true if the given value is positive finite number.
       #   false otherwise.
-      Helpers::Validator.finite_number?(value) && value.positive?
+      Helpers::Validator.finite_number?(value) && value > 0
     end
   end
 end

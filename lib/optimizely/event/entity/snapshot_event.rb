@@ -19,22 +19,14 @@ module Optimizely
   class SnapshotEvent
     attr_reader :entity_id, :uuid, :key, :timestamp, :revenue, :value, :tags
 
-    def initialize(
-      entity_id:,
-      uuid:,
-      key:,
-      timestamp:,
-      revenue: nil,
-      value: nil,
-      tags: nil
-    )
-      @entity_id = entity_id
-      @uuid = uuid
-      @key = key
-      @timestamp = timestamp
-      @revenue = revenue
-      @value = value
-      @tags = tags
+    def initialize(opts = {})
+      @entity_id = opts[:entity_id]
+      @uuid = opts[:uuid]
+      @key = opts[:key]
+      @timestamp = opts[:timestamp]
+      @revenue = opts[:revenue]
+      @value = opts[:value]
+      @tags = opts[:tags]
     end
 
     def as_json

@@ -451,7 +451,7 @@ describe Optimizely::NotificationCenter do
         expect(spy_logger).to have_received(:log).once
                                                  .with(
                                                    Logger::ERROR,
-                                                   'Problem calling notify callback. Error: wrong number of arguments (given 0, expected 1)'
+                                                   'Problem calling notify callback. Error: wrong number of arguments (0 for 1)'
                                                  )
       end
 

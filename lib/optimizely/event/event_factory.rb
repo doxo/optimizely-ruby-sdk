@@ -71,20 +71,22 @@ module Optimizely
 
       def build_attribute_list(user_attributes, project_config)
         visitor_attributes = []
-        user_attributes&.keys&.each do |attribute_key|
-          # Omit attribute values that are not supported by the log endpoint.
-          attribute_value = user_attributes[attribute_key]
-          next unless Helpers::Validator.attribute_valid?(attribute_key, attribute_value)
+        if user_attributes && user_attributes.keys
+          user_attributes.keys.each do |attribute_key|
+            # Omit attribute values that are not supported by the log endpoint.
+            attribute_value = user_attributes[attribute_key]
+            next unless Helpers::Validator.attribute_valid?(attribute_key, attribute_value)
 
-          attribute_id = project_config.get_attribute_id attribute_key
-          next if attribute_id.nil?
+            attribute_id = project_config.get_attribute_id attribute_key
+            next if attribute_id.nil?
 
-          visitor_attributes.push(
-            entity_id: attribute_id,
-            key: attribute_key,
-            type: CUSTOM_ATTRIBUTE_FEATURE_TYPE,
-            value: attribute_value
-          )
+            visitor_attributes.push(
+              entity_id: attribute_id,
+              key: attribute_key,
+              type: CUSTOM_ATTRIBUTE_FEATURE_TYPE,
+              value: attribute_value
+            )
+          end
         end
 
         return visitor_attributes unless Helpers::Validator.boolean? project_config.bot_filtering

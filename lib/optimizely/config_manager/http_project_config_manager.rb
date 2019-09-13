@@ -48,34 +48,36 @@ module Optimizely
     # error_handler - Provides a handle_error method to handle exceptions.
     # skip_json_validation - Optional boolean param which allows skipping JSON schema
     #                       validation upon object invocation. By default JSON schema validation will be performed.
-    def initialize(
-      sdk_key: nil,
-      url: nil,
-      url_template: nil,
-      polling_interval: nil,
-      blocking_timeout: nil,
-      auto_update: true,
-      start_by_default: true,
-      datafile: nil,
-      logger: nil,
-      error_handler: nil,
-      skip_json_validation: false,
-      notification_center: nil
-    )
-      @logger = logger || NoOpLogger.new
-      @error_handler = error_handler || NoOpErrorHandler.new
-      @datafile_url = get_datafile_url(sdk_key, url, url_template)
+    def initialize(opts = {})
+      opts = {
+        sdk_key: nil,
+        url: nil,
+        url_template: nil,
+        polling_interval: nil,
+        blocking_timeout: nil,
+        auto_update: true,
+        start_by_default: true,
+        datafile: nil,
+        logger: nil,
+        error_handler: nil,
+        skip_json_validation: false,
+        notification_center: nil
+      }.merge(opts)
+
+      @logger = opts[:logger] || NoOpLogger.new
+      @error_handler = opts[:error_handler] || NoOpErrorHandler.new
+      @datafile_url = get_datafile_url(opts[:sdk_key], opts[:url], opts[:url_template])
       @polling_interval = nil
-      polling_interval(polling_interval)
+      polling_interval(opts[:polling_interval])
       @blocking_timeout = nil
-      blocking_timeout(blocking_timeout)
+      blocking_timeout(opts[:blocking_timeout])
       @last_modified = nil
-      @async_scheduler = AsyncScheduler.new(method(:fetch_datafile_config), @polling_interval, auto_update, @logger)
-      @async_scheduler.start! if start_by_default == true
+      @async_scheduler = AsyncScheduler.new(method(:fetch_datafile_config), @polling_interval, opts[:auto_update], @logger)
+      @async_scheduler.start! if opts[:start_by_default] == true
       @closed = false
-      @skip_json_validation = skip_json_validation
-      @notification_center = notification_center.is_a?(Optimizely::NotificationCenter) ? notification_center : NotificationCenter.new(@logger, @error_handler)
-      @config = datafile.nil? ? nil : DatafileProjectConfig.create(datafile, @logger, @error_handler, @skip_json_validation)
+      @skip_json_validation = opts[:skip_json_validation]
+      @notification_center = opts[:notification_center].is_a?(Optimizely::NotificationCenter) ? opts[:notification_center] : NotificationCenter.new(@logger, @error_handler)
+      @config = opts[:datafile].nil? ? nil : DatafileProjectConfig.create(opts[:datafile], @logger, @error_handler, @skip_json_validation)
       @mutex = Mutex.new
       @resource = ConditionVariable.new
     end
@@ -219,7 +221,7 @@ module Optimizely
         return
       end
 
-      unless polling_interval.positive? && polling_interval <= Helpers::Constants::CONFIG_MANAGER['MAX_SECONDS_LIMIT']
+      unless polling_interval > 0 && polling_interval <= Helpers::Constants::CONFIG_MANAGER['MAX_SECONDS_LIMIT']
         @logger.log(
           Logger::DEBUG,
           "Polling interval '#{polling_interval}' has invalid range. Defaulting to #{Helpers::Constants::CONFIG_MANAGER['DEFAULT_UPDATE_INTERVAL']} seconds."

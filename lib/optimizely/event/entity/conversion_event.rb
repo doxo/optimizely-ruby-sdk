@@ -22,22 +22,15 @@ module Optimizely
     # Represents conversion event
     attr_reader :event, :user_id, :visitor_attributes, :tags, :bot_filtering
 
-    def initialize(
-      event_context:,
-      event:,
-      user_id:,
-      visitor_attributes:,
-      tags:,
-      bot_filtering:
-    )
-      @event_context = event_context
+    def initialize(opts = {})
+      @event_context = opts[:event_context]
       @uuid = SecureRandom.uuid
       @timestamp = Helpers::DateTimeUtils.create_timestamp
-      @event = event
-      @user_id = user_id
-      @visitor_attributes = visitor_attributes
-      @tags = tags
-      @bot_filtering = bot_filtering
+      @event = opts[:event]
+      @user_id = opts[:user_id]
+      @visitor_attributes = opts[:visitor_attributes]
+      @tags = opts[:tags]
+      @bot_filtering = opts[:bot_filtering]
     end
   end
 end

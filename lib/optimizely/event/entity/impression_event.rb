@@ -22,24 +22,16 @@ module Optimizely
     attr_reader :user_id, :experiment_layer_id, :experiment_id, :variation_id,
                 :visitor_attributes, :bot_filtering
 
-    def initialize(
-      event_context:,
-      user_id:,
-      experiment_layer_id:,
-      experiment_id:,
-      variation_id:,
-      visitor_attributes:,
-      bot_filtering:
-    )
-      @event_context = event_context
+    def initialize(opts = {})
+      @event_context = opts[:event_context]
       @uuid = SecureRandom.uuid
       @timestamp = Helpers::DateTimeUtils.create_timestamp
-      @user_id = user_id
-      @experiment_layer_id = experiment_layer_id
-      @experiment_id = experiment_id
-      @variation_id = variation_id
-      @visitor_attributes = visitor_attributes
-      @bot_filtering = bot_filtering
+      @user_id = opts[:user_id]
+      @experiment_layer_id = opts[:experiment_layer_id]
+      @experiment_id = opts[:experiment_id]
+      @variation_id = opts[:variation_id]
+      @visitor_attributes = opts[:visitor_attributes]
+      @bot_filtering = opts[:bot_filtering]
     end
   end
 end

@@ -20,20 +20,13 @@ module Optimizely
     attr_reader :account_id, :project_id, :anonymize_ip, :revision, :client_name,
                 :client_version
 
-    def initialize(
-      account_id:,
-      project_id:,
-      anonymize_ip:,
-      revision:,
-      client_name:,
-      client_version:
-    )
-      @account_id = account_id
-      @project_id = project_id
-      @anonymize_ip = anonymize_ip
-      @revision = revision
-      @client_name = client_name
-      @client_version = client_version
+    def initialize(opts = {})
+      @account_id = opts[:account_id]
+      @project_id = opts[:project_id]
+      @anonymize_ip = opts[:anonymize_ip]
+      @revision = opts[:revision]
+      @client_name = opts[:client_name]
+      @client_version = opts[:client_version]
     end
 
     def as_json
