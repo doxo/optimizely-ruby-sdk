@@ -14,7 +14,6 @@ before_install:
 install:
   - bundle install
 script: "bundle exec rake spec"
-before_script: "rubocop"
 addons:
   srcclr: true
 after_success: "coveralls"

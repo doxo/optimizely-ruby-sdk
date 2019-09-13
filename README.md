@@ -191,10 +191,6 @@ Copyright &copy; 2006 David Chelimsky, The RSpec Development Team
 Copyright &copy; 2005 Steven Baker  
 License (MIT): [https://github.com/rspec/rspec/blob/master/LICENSE.md](https://github.com/rspec/rspec/blob/master/LICENSE.md)  
 
-**RuboCop** [https://github.com/rubocop-hq/rubocop](https://github.com/rubocop-hq/rubocop)  
-Copyright &copy; 2012-19 Bozhidar Batsov  
-License (MIT): [https://github.com/rubocop-hq/rubocop/blob/master/LICENSE.txt](https://github.com/rubocop-hq/rubocop/blob/master/LICENSE.txt)
-
 **WebMock** [https://github.com/bblimke/webmock](https://github.com/bblimke/webmock)  
 Copyright &copy; 2009-2010 Bartosz Blimke    
 License (MIT): [https://github.com/bblimke/webmock/blob/master/LICENSE](https://github.com/bblimke/webmock/blob/master/LICENSE)
