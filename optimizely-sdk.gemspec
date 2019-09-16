@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'lib/optimizely/version'
+require File.expand_path("../lib/optimizely/version", __FILE__)
 
 Gem::Specification.new do |spec|
   spec.name          = 'optimizely-sdk'
@@ -20,7 +20,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'coveralls'
   spec.add_development_dependency 'rake'
   spec.add_development_dependency 'rspec'
-  spec.add_development_dependency 'rubocop', '0.73.0'
   spec.add_development_dependency 'webmock'
 
   spec.add_runtime_dependency 'httparty', '~> 0.11'

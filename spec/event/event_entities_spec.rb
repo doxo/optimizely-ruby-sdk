@@ -87,7 +87,7 @@ describe Optimizely::EventBatch do
             tags: {
               'revenue' => 42,
               'non-revenue' => 42,
-              'value': 1.5
+              'value' => 1.5
             }
           }]
         }],
@@ -165,7 +165,7 @@ describe Optimizely::EventBatch do
       tags: {
         'revenue' => 42,
         'non-revenue' => 42,
-        'value': 1.5
+        'value' => 1.5
       }
     )
 

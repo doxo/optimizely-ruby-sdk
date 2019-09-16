@@ -258,7 +258,7 @@ module Optimizely
       @event_processor.process(user_event)
       @logger.log(Logger::INFO, "Tracking event '#{event_key}' for user '#{user_id}'.")
 
-      if @notification_center.notification_count(NotificationCenter::NOTIFICATION_TYPES[:TRACK]).positive?
+      if @notification_center.notification_count(NotificationCenter::NOTIFICATION_TYPES[:TRACK]) > 0
         log_event = EventFactory.create_log_event(user_event, @logger)
         @notification_center.send_notifications(
           NotificationCenter::NOTIFICATION_TYPES[:TRACK],
@@ -623,7 +623,7 @@ module Optimizely
           if feature_enabled == true
             variation_variable_usages = config.variation_id_to_variable_usage_map[variation['id']]
             variable_id = variable['id']
-            if variation_variable_usages&.key?(variable_id)
+            if variation_variable_usages && variation_variable_usages.key?(variable_id)
               variable_value = variation_variable_usages[variable_id]['value']
               @logger.log(Logger::INFO,
                           "Got variable value '#{variable_value}' for variable '#{variable_key}' of feature flag '#{feature_flag_key}'.")
@@ -710,7 +710,7 @@ module Optimizely
       variation_id = config.get_variation_id_from_key(experiment_key, variation_key)
       user_event = UserEventFactory.create_impression_event(config, experiment, variation_id, user_id, attributes)
       @event_processor.process(user_event)
-      return unless @notification_center.notification_count(NotificationCenter::NOTIFICATION_TYPES[:ACTIVATE]).positive?
+      return unless @notification_center.notification_count(NotificationCenter::NOTIFICATION_TYPES[:ACTIVATE]) > 0
 
       @logger.log(Logger::INFO, "Activating user '#{user_id}' in experiment '#{experiment_key}'.")
       variation = config.get_variation_from_id(experiment_key, variation_id)

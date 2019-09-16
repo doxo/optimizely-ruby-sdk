@@ -18,11 +18,11 @@
 module Optimizely
   class VisitorAttribute
     attr_reader :entity_id, :key, :type, :value
-    def initialize(entity_id:, key:, type:, value:)
-      @entity_id = entity_id
-      @key = key
-      @type = type
-      @value = value
+    def initialize(opts = {})
+      @entity_id = opts[:entity_id]
+      @key = opts[:key]
+      @type = opts[:type]
+      @value = opts[:value]
     end
 
     def as_json

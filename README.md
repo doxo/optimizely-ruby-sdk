@@ -1,4 +1,4 @@
-# Optimizely Ruby SDK
+# Optimizely Ruby SDK (backported for ruby 1.9.3)
 [![Build Status](https://travis-ci.org/optimizely/ruby-sdk.svg?branch=master)](https://travis-ci.org/optimizely/ruby-sdk)
 [![Coverage Status](https://coveralls.io/repos/github/optimizely/ruby-sdk/badge.svg)](https://coveralls.io/github/optimizely/ruby-sdk)
 [![Apache 2.0](https://img.shields.io/github/license/nebula-plugins/gradle-extra-configurations-plugin.svg)](http://www.apache.org/licenses/LICENSE-2.0)
@@ -190,10 +190,6 @@ Copyright &copy; 2009 Chad Humphries, David Chelimsky
 Copyright &copy; 2006 David Chelimsky, The RSpec Development Team  
 Copyright &copy; 2005 Steven Baker  
 License (MIT): [https://github.com/rspec/rspec/blob/master/LICENSE.md](https://github.com/rspec/rspec/blob/master/LICENSE.md)  
-
-**RuboCop** [https://github.com/rubocop-hq/rubocop](https://github.com/rubocop-hq/rubocop)  
-Copyright &copy; 2012-19 Bozhidar Batsov  
-License (MIT): [https://github.com/rubocop-hq/rubocop/blob/master/LICENSE.txt](https://github.com/rubocop-hq/rubocop/blob/master/LICENSE.txt)
 
 **WebMock** [https://github.com/bblimke/webmock](https://github.com/bblimke/webmock)  
 Copyright &copy; 2009-2010 Bartosz Blimke    

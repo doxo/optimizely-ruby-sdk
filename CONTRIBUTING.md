@@ -7,23 +7,17 @@ We welcome contributions and feedback! All contributors must sign our [Contribut
 1. Fork the repository and create your branch from master.
 2. Please follow the [commit message guidelines](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#-commit-message-guidelines) for each commit message.
 3. Make sure to add tests!  
-4. Run `rubocop` to ensure there are no lint errors.
-5. `git push` your changes to GitHub.
-6. Open a PR from your fork into the master branch of the original repo.
-7. Make sure that all unit tests are passing and that there are no merge conflicts between your branch and `master`.
-8. Open a pull request from `YOUR_NAME/branch_name` to `master`.
-9. A repository maintainer will review your pull request and, if all goes well, squash and merge it!
+4. `git push` your changes to GitHub.
+5. Open a PR from your fork into the master branch of the original repo.
+6. Make sure that all unit tests are passing and that there are no merge conflicts between your branch and `master`.
+7. Open a pull request from `YOUR_NAME/branch_name` to `master`.
+8. A repository maintainer will review your pull request and, if all goes well, squash and merge it!
 
 ## Pull request acceptance criteria
 
 * **All code must have test coverage.** We use rspec. Changes in functionality should have accompanying unit tests. Bug fixes should have accompanying regression tests.
   * Tests are located in `/spec` with one file per class.
 * Please don't change the Rakefile or VERSION. We'll take care of bumping the version when we next release.
-* Lint your code with our [RuboCop rules](.rubocop.yml) before submitting.
-
-## Style
-
-To enforce style rules, we use RuboCop. See our [rubocop.yml](.rubocop.yml) for more information on our specific style rules.
 
 ## License
 
